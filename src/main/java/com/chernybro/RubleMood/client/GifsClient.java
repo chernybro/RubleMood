@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "giphy", url = "${giphy.url}")
 public interface GifsClient {
 
-    @GetMapping("/random")
+    @GetMapping("/search")
     Gif getGif(
             @RequestParam("api_key") String api_key,
-            @RequestParam("tag") String tag);
+            @RequestParam("q") String tag,
+            @RequestParam("limit") int limit,
+            @RequestParam("offset") int offset,
+            @RequestParam("rating") String rating,
+            @RequestParam("lang") String lang);
 }

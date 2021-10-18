@@ -9,6 +9,9 @@ public class Rate {
     private String base;
     private Map<String, Double> rates;
 
+    public Rate() {
+    }
+
     public String getDisclaimer() {
         return disclaimer;
     }

@@ -1,11 +1,15 @@
 package com.chernybro.RubleMood.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+
 public class Gif {
-    private String type;
-    private String id;
-    private String url;
-    private String embed_url;
-    private String title;
     private String stdUrl;
 
     public String getStdUrl() {
@@ -16,44 +20,19 @@ public class Gif {
         this.stdUrl = stdUrl;
     }
 
-    public String getType() {
-        return type;
+
+    @Override
+    public String toString() {
+        return "Gif{" +
+                ", stdUrl='" + stdUrl + '\'' +
+                '}';
     }
 
-    public void setType(String type) {
-        this.type = type;
+    @SuppressWarnings("unchecked")
+    @JsonProperty("data")
+    private void unpackNested(List<Map<String, Object>> data) {
+        Map<String,Object> images = (Map<String, Object>)data.get(new Random().nextInt(data.size())).get("images");
+        Map<String,Object> original = (Map<String, Object>)images.get("original");
+        this.stdUrl = (String)original.get("url");
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getEmbed_url() {
-        return embed_url;
-    }
-
-    public void setEmbed_url(String embed_url) {
-        this.embed_url = embed_url;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
 }
