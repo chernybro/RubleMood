@@ -31,59 +31,47 @@ public class RatesService {
     private String brokeTag;
 
 
-    public Rate getYesterdayRates() {
-        return yesterdayRates;
+    public Double getYesterdayRates(String code) {
+        return yesterdayRates.getRates().get(code);
     }
 
-    public Rate getCurrentRates() {
-        return currentRates;
+    public Double getCurrentRates(String code) {
+        return currentRates.getRates().get(code);
     }
 
-    private Rate updateCurrentRates() {
-        return currentRates = ratesClient.getCurrentRates(appId, base);
+    private void updateCurrentRates(){
+        currentRates = ratesClient.getCurrentRates(appId, base);
     }
 
-    public Rate updateAllRates() {
-        Long curTime = System.currentTimeMillis();
+    public void updateAllRates() {
         updateCurrentRates();
-        updateYesterdayRates(curTime);
-        return currentRates;
-
+        updateYesterdayRates();
     }
 
     public List<String> getCurrencyCodes() {
         List<String> res = null;
-        if (updateCurrentRates() != null) {
+        if (currentRates != null) {
             res = new ArrayList<>(currentRates.getRates().keySet());
         }
         return res;
     }
 
-    public Rate updateYesterdayRates(Long curTime) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
-        cal.setTimeInMillis(curTime);
-        cal.add(Calendar.DATE, -1);
-        String prevDate = sFormat.format(cal.getTime());
-
-        return yesterdayRates = ratesClient.getYesterdayRates(prevDate, appId, base);
+    public void updateYesterdayRates() {
+        String prevDate = getYesterdayDate();
+        yesterdayRates = ratesClient.getYesterdayRates(prevDate, appId, base);
     }
 
-    public String calculateTagOfMood(String code) {
-        Double curValue;
-        Double prevValue;
-        curValue = currentRates.getRates().get(code);
-        prevValue = yesterdayRates.getRates().get(code);
-        int compareResult = Double.compare(curValue, prevValue);
+    private String getYesterdayDate() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.add(Calendar.DATE, -1);
+        return sFormat.format(cal.getTime());
+    }
 
-        String tag = "";
-        if (compareResult >= 0) {
-            tag = this.richTag;
-        } else {
-            tag = this.brokeTag;
-        }
-        return tag;
-        // Gif gif = giphyService.getGif(tag);
-        // return gifObject;
+    // Required Unit Test (check right mood tag)
+    public String calculateTagOfMood(Double yest, Double curr) {
+        int compareResult = Double.compare(curr, yest);
+        return  (compareResult >= 0) ? this.richTag : this.brokeTag;
     }
 }

@@ -19,6 +19,8 @@ public class GifService {
         this.gifsClient = gifsClient;
     }
 
+
+    // Required Unit Test (json gif contains url)
     public Gif getGif(String tag) {
         return gifsClient.getGif(apikey, tag, bound,0,"g","en");
     }
