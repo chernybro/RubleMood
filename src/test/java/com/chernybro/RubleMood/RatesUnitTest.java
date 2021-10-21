@@ -34,7 +34,7 @@ public class RatesUnitTest {
         BDDMockito.when(rateService.getYesterdayRates(code)).thenReturn(less);
         Assert.assertEquals(
                 nonmockedService.calculateTagOfMood(rateService.getYesterdayRates(code), rateService.getCurrentRates(code)),
-                richTag);
+                "rich");
     }
 
     @Test
@@ -50,7 +50,7 @@ public class RatesUnitTest {
         BDDMockito.when(rateService.getYesterdayRates(code)).thenReturn(more);
         Assert.assertEquals(
                 nonmockedService.calculateTagOfMood(rateService.getYesterdayRates(code), rateService.getCurrentRates(code)),
-                brokeTag);
+                "broke");
     }
 
 }
