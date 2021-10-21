@@ -1,6 +1,7 @@
 package com.chernybro.RubleMood;
 
 import com.chernybro.RubleMood.service.RatesService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.Assert;
+
 
 @ExtendWith(SpringExtension.class)
 public class RatesUnitTest {
@@ -32,7 +33,7 @@ public class RatesUnitTest {
 
         BDDMockito.when(rateService.getCurrentRates(code)).thenReturn(more);
         BDDMockito.when(rateService.getYesterdayRates(code)).thenReturn(less);
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 nonmockedService.calculateTagOfMood(rateService.getYesterdayRates(code), rateService.getCurrentRates(code)),
                 "rich");
     }
@@ -48,7 +49,7 @@ public class RatesUnitTest {
 
         BDDMockito.when(rateService.getCurrentRates(code)).thenReturn(less);
         BDDMockito.when(rateService.getYesterdayRates(code)).thenReturn(more);
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 nonmockedService.calculateTagOfMood(rateService.getYesterdayRates(code), rateService.getCurrentRates(code)),
                 "broke");
     }

@@ -8,9 +8,9 @@ import io.restassured.response.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.testng.Assert;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -37,7 +37,7 @@ public class RatesWireMock {
         );
     }
     @Test
-    public void TestWM() throws InterruptedException {
+    public void TestWM() {
         System.out.println(server.baseUrl());
         assertTrue(server.isRunning());
         //Thread.sleep(99999);
@@ -53,7 +53,7 @@ public class RatesWireMock {
         String json = response.print();
         JSONObject request = new JSONObject(json);
         String res = request.getJSONObject("rates").toString();
-        Assert.assertNotEquals(res, null);
+        Assertions.assertNotEquals(res, null);
     }
 
 
